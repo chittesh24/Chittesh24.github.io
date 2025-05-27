@@ -26,20 +26,19 @@
 
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
-
+  <style>
+  .sent-message,
+  .loading {
+    display: none;
+  }
+</style>
 </head>
-
 <body class="contact-page">
-
   <header id="header" class="header d-flex align-items-center light-background sticky-top">
     <div class="container-fluid position-relative d-flex align-items-center justify-content-between">
-
       <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
-        <!-- Uncomment the line below if you also wish to use an image logo -->
-        <!-- <img src="assets/img/logo.png" alt=""> -->
         <h1 class="sitename">Chittesh S</h1>
       </a>
-
       <nav id="navmenu" class="navmenu">
         <ul>
           <li><a href="index.html">Home</a></li>
@@ -50,31 +49,22 @@
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
-
       <div class="header-social-links">
         <a href="https://www.instagram.com/__chittesh_24/#" class="instagram"><i class="bi bi-instagram"></i></a>
         <a href="http://www.linkedin.com/in/chittesh-s" class="linkedin"><i class="bi bi-linkedin"></i></a>
       </div>
-
     </div>
   </header>
-
   <main class="main">
-
     <!-- Contact Section -->
     <section id="contact" class="contact section">
-
       <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
         <h2>Contact</h2>
       </div><!-- End Section Title -->
-
       <div class="container" data-aos="fade-up" data-aos-delay="100">
-
         <div class="row gy-4">
-
           <div class="col-lg-5">
-
             <div class="info-wrap">
               <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="200">
                 <i class="bi bi-geo-alt flex-shrink-0"></i>
@@ -83,7 +73,6 @@
                   <p>267/A, Mullai nagar, Palamalai Road, SRKV Post, Coimbatore-641020</p>
                 </div>
               </div><!-- End Info Item -->
-
               <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="300">
                 <i class="bi bi-telephone flex-shrink-0"></i>
                 <div>
@@ -91,7 +80,6 @@
                   <p>+91 8825448553</p>
                 </div>
               </div><!-- End Info Item -->
-
               <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="400">
                 <i class="bi bi-envelope flex-shrink-0"></i>
                 <div>
@@ -101,53 +89,40 @@
               </div><!-- End Info Item -->
             </div>
           </div>
-
           <div class="col-lg-7">
             <form action="https://formspree.io/f/xanorydj" method="POST" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
+              <input type="hidden" name="_redirect" value="">
               <div class="row gy-4">
-
     <div class="col-md-6">
       <label for="name-field" class="pb-2">Your Name</label>
       <input type="text" name="name" id="name-field" class="form-control" required>
     </div>
-
     <div class="col-md-6">
       <label for="email-field" class="pb-2">Your Email</label>
       <input type="email" class="form-control" name="email" id="email-field" required>
     </div>
-
     <div class="col-md-12">
       <label for="subject-field" class="pb-2">Subject</label>
       <input type="text" class="form-control" name="subject" id="subject-field" required>
     </div>
-
     <div class="col-md-12">
       <label for="message-field" class="pb-2">Message</label>
       <textarea class="form-control" name="message" rows="10" id="message-field" required></textarea>
     </div>
-
     <div class="col-md-12 text-center">
       <div class="loading">Loading</div>
       <div class="error-message"></div>
       <div class="sent-message">Your message has been sent. Thank you!</div>
-
       <button type="submit">Send Message</button>
     </div>
-
   </div>
 </form>
           </div><!-- End Contact Form -->
-
         </div>
-
       </div>
-
     </section><!-- /Contact Section -->
-
   </main>
-
   <footer id="footer" class="footer light-background">
-
     <div class="container">
       <div class="copyright text-center ">
         <p>© <span>Copyright</span> <strong class="px-1 sitename">Chittesh S</strong> <span>All Rights Reserved<br></span></p>
@@ -159,15 +134,11 @@
       <div class="credits">
       </div>
     </div>
-
   </footer>
-
   <!-- Scroll Top -->
   <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-
   <!-- Preloader -->
   <div id="preloader"></div>
-
   <!-- Vendor JS Files -->
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="assets/vendor/aos/aos.js"></script>
@@ -177,10 +148,36 @@
   <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
   <script src="assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
   <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
-
+  <script>
+  const form = document.querySelector(".php-email-form");
+  const sentMessage = document.querySelector(".sent-message");
+  const loading = document.querySelector(".loading");
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault();
+    loading.style.display = "block";
+    const formData = new FormData(form);
+    try {
+      const response = await fetch(form.action, {
+        method: "POST",
+        body: formData,
+        headers: {
+          Accept: "application/json"
+        }
+      });
+      loading.style.display = "none";
+      if (response.ok) {
+        sentMessage.style.display = "block";
+        form.reset();
+      } else {
+        alert("Oops! There was a problem submitting the form.");
+      }
+    } catch (error) {
+      loading.style.display = "none";
+      alert("There was a network error.");
+    }
+  });
+</script>
 </body>
-
 </html>
